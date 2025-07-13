@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -37,6 +37,7 @@ fi
 _DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Preserve the calling directory
 _CALLING_DIR="$(pwd)"
+echo "${_CALLING_DIR}"
 # Options used during compilation
 _COMPILE_JVM_OPTS="-Xss128m -Xmx4g -XX:ReservedCodeCacheSize=128m"
 
@@ -56,11 +57,12 @@ install_app() {
   local checksum_suffix="$4"
   local local_tarball="${_DIR}/$5"
   local binary="${_DIR}/$6"
-  local remote_tarball="${mirror_host}/${url_path}${url_query}"
+  local remote_tarball="${mirror_host}/${url_path}"
+  echo "${remote_tarball}"
   local local_checksum="${local_tarball}.${checksum_suffix}"
   local remote_checksum="${mirror_host}/${url_path}.${checksum_suffix}${url_query}"
-
-  local curl_opts="--retry 3 --silent --show-error -L"
+  echo "${local_tarball}"
+  local curl_opts="--retry 3 -S -L"
   local wget_opts="--no-verbose"
 
   if [ ! -f "$binary" ]; then
@@ -69,10 +71,10 @@ install_app() {
     # download application
     if [ ! -f "${local_tarball}" ] && [ "$(command -v curl)" ]; then
       echo "exec: curl ${curl_opts} ${remote_tarball}" 1>&2
-      curl "${curl_opts}" "${remote_tarball}" > "${local_tarball}"
+      curl ${curl_opts} "${remote_tarball}" --output "${local_tarball}"
       if [ -n "${checksum_suffix}" ]; then
         echo "exec: curl ${curl_opts} ${remote_checksum}" 1>&2
-        curl "${curl_opts}" "${remote_checksum}" > "${local_checksum}"
+        curl ${curl_opts} "${remote_checksum}" > "${local_checksum}"
       fi
     fi
     # if the file still doesn't exist, lets try `wget` and cross our fingers
