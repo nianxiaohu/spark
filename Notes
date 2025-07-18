@@ -1,2 +1,18 @@
 Notes for running the project
 https://www.jetbrains.com/help/idea/run-debug-configuration-shell-script.html
+issues Check:
+Spark version compatability with Java version
+Download Java 17 to Macbook Air?
+https://docs.oracle.com/en/java/javase/17/install/index.html#GUID-E8A251B6-D9A9-4276-ABC8-CC0DAD62EA33
+/Library/Java/JavaVirtualMachines
+export JAVA_HOME=`/usr/libexec/java_home -v 17`
+
+Download prebuilt version
+apple@Apples-MacBook-Air spark-4.0.0-bin-hadoop3 % pwd
+/Users/apple/Downloads/spark-4.0.0-bin-hadoop3
+and run  ./bin/run-example SparkPi
+ensure making sure JAVA 17 VERSION
+
+
+What achieved: build successfully with updated script and using correct version of Java
+
